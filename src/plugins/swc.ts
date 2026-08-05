@@ -83,8 +83,12 @@ export function swcPlugin(options: SwcOptions = {}): Plugin {
   return {
     name: 'vite:swc',
     config(): UserConfig {
+      // Vite 8 moved default transform to Oxc: only disabling esbuild is ignored
+      // and emits a warning. SWC replaces both paths when this plugin is active.
+      // See https://github.com/alex8088/electron-vite/issues/916
       return {
-        esbuild: false
+        esbuild: false,
+        oxc: false
       }
     },
     async configResolved(resolvedConfig): Promise<void> {
